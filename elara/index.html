@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DT6FEFTGBQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-DT6FEFTGBQ');
+  </script>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elara Muse • Link-in-Bio</title>
+  <style>
+    /*=====================================
+      GLOBAL THEME & RESET
+    =====================================*/
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background: var(--color-bg);
+      color: #fff; /* primary text color */
+      min-height: 100%;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    :root {
+      /* COLORS */
+      --color-bg: #000; /* dark background */
+      --color-primary-1: #004488;
+      --color-primary-2: #006699;
+      --color-primary-3: #0099ff;
+      --color-purple-1: #667eea;
+      --color-purple-2: #764ba2;
+      --color-pink: #ff6b6b;
+      --color-muted: #888888;
+      --color-border: rgba(0, 0, 0, 0.1);
+
+      /* GRADIENTS */
+      --gradient-profile: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      --gradient-btn-primary: linear-gradient(45deg, var(--color-purple-1), var(--color-purple-2));
+      --gradient-btn-secondary: linear-gradient(45deg, var(--color-pink), #ee5a24);
+      --gradient-1: linear-gradient(45deg, #ff9a9e, #fecfef);
+      --gradient-2: linear-gradient(45deg, #a18cd1, #fbc2eb);
+      --gradient-3: linear-gradient(45deg, #ffecd2, #fcb69f);
+      --gradient-4: linear-gradient(45deg, #d299c2, #fef9d7);
+      --gradient-5: linear-gradient(45deg, #89f7fe, #66a6ff);
+
+      /* SHADOWS */
+      --shadow-profile: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #e0e0e0;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #222;
+      border-radius: 4px;
+    }
+
+    /*=====================================
+      BLURRED BACKGROUND (using profile image)
+    =====================================*/
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: url('images/background.jpg') center/cover no-repeat;
+      filter: brightness(1.1); /* removed blur and increased brightness */
+      z-index: -2;
+    }
+
+    .backdrop::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35); /* darker overlay */
+    }
+
+    /*=====================================
+      CONTAINER
+    =====================================*/
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px 15px 80px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+    }
+
+    /*=====================================
+      PROFILE SECTION
+    =====================================*/
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end; /* push content to bottom */
+      /* Use profile photo as background with no overlay */
+      background: url('images/elara-8.jpg') center 20%/cover no-repeat;
+      padding: 320px 20px 10px; /* increased top padding, reduced bottom padding */
+      border-radius: 20px;
+      box-shadow: var(--shadow-profile);
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile::before {
+      /* decorative overlay */
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 50%);
+      transform: translate(-25%, -25%);
+      z-index: 0;
+    }
+
+    .profile-img {
+      display: none; /* hidden now that background image fills tile */
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 1;
+      /* Position the name absolutely so it can be placed anywhere over the photo */
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 50px; /* adjust this value to move the text up/down */
+    }
+
+    .verified-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--color-primary-3);
+      border-radius: 50%;
+    }
+
+    .verified-badge {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stats {
+      display: flex;
+      gap:15px;
+      margin-bottom: 0;
+      margin-top: 8px; /* smaller gap with profile name */
+      font-size: 13px;
+      color: #ccc; /* secondary text */
+      z-index: 1;
+    }
+
+    .stats strong {
+      font-weight: 700;
+      color: #fff;
+      font-size: 18px;
+      margin-right: 4px;
+    }
+
+    /* Social media icon row under profile name */
+    .social-icons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      z-index: 1;
+      margin-left: -30px;
+    }
+
+    .social-icons a {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .social-icons img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+    }
+
+    .profile-actions {
+      display: none; /* message & follow removed */
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:focus {
+      outline: 2px solid var(--color-primary-3);
+      outline-offset: 2px;
+    }
+
+    .btn.primary {
+      background: var(--gradient-btn-primary);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 2px solid var(--color-border);
+    }
+
+    .btn.unlock {
+      background: var(--gradient-btn-secondary);
+    }
+
+    .btn.signup {
+      background: var(--gradient-btn-primary);
+      padding: 12px 24px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /*=====================================
+      CONTENT GRID (PLATFORM LINKS)
+    =====================================*/
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .link-tile {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fff;
+      text-align: left;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      aspect-ratio: 1/1;
+      /* Support image backgrounds */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .link-tile.large {
+      grid-column: span 2;
+      aspect-ratio: 4/3; /* taller ratio to show more of the background image */
+    }
+
+    .link-tile .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .link-tile .overlay {
+      position: relative;
+      padding: 1px 5px 2px; /* thinner overlay */
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
+      background: rgba(0, 0, 0, 0.55); /* dark transparent */
+      color: #fff;
+    }
+
+    .link-tile .title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .link-tile .subtitle {
+      font-size: 12px;
+      color: #222;
+    }
+
+    .link-tile:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /*=====================================
+      PHOTO GRID
+    =====================================*/
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .photo-item {
+      width: 100%;
+      aspect-ratio: 1/1;
+      /* Replace gradient with dynamic background images */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .photo-item:nth-child(2) {
+      background: var(--gradient-1);
+    }
+
+    .photo-item:nth-child(3) {
+      background: var(--gradient-2);
+    }
+
+    .photo-item:nth-child(4) {
+      background: var(--gradient-3);
+    }
+
+    .photo-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    /*=====================================
+      LOCKED CONTENT SECTIONS
+    =====================================*/
+    .locked-section {
+      position: relative;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--color-border);
+      border-radius: 15px;
+      padding: 40px 20px 50px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Pseudo-element for blurred background image */
+    .locked-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: blur(12px);
+      transform: scale(1.1); /* prevent edge cut-off after blur */
+      z-index: 0;
+    }
+
+    .locked-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Different images for each locked section */
+    #locked-1::before {
+      background-image: url('images/IMG_00437.png');
+    }
+
+    #locked-2::before {
+      background-image: url('images/IMG_00634.png');
+    }
+
+    .locked-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 18px 0 8px;
+    }
+
+    .locked-section p {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .locked-section .emoji {
+      font-size: 40px;
+    }
+
+    /*=====================================
+      FOOTER
+    =====================================*/
+    footer {
+      border-top: 1px solid var(--color-border);
+      padding: 30px 0 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #ccc;
+      background: transparent;
+    }
+
+    footer p {
+      margin-bottom: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /*=====================================
+      ANIMATIONS (FADE IN ON SCROLL)
+    =====================================*/
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <main class="container">
+    <!-- ================= PROFILE SECTION ================= -->
+    <section class="profile fade-in" id="profile">
+      <img src="images/elara-8.JPG" alt="Profile image of Elara muse" class="profile-img" />
+      <h1 class="profile-name">
+        Elara Muse <img src="images/icons/verified-2.png" alt="Verified badge" class="verified-badge" />
+      </h1>
+      <div class="stats" aria-label="Follower and following statistics">
+        <!-- <span><strong>203M</strong> Total Followers</span> -->
+        <!-- <span><strong>20✨ Texas</strong></span> -->
+      </div>
+
+      <!-- Social media icon links -->
+      <div class="social-icons" aria-label="Social media profiles">
+ 
+        <!-- <a href="https://t.me/+G26nXg_Gbo43MDhh" target="_blank" aria-label="Telegram">
+          <img src="images/icons/telegram.png" alt="Telegram icon" />
+        </a> -->
+<!--         <a href="https://www.fanvue.com/bella_muse/fv-3" target="_blank" aria-label="Fanvue">
+          <img src="images/icons/Fanvue.png" alt="Fanvue icon" />
+        </a> -->
+        <!-- <a href="https://snapchat.com/t/fKVcG572" target="_blank" aria-label="X (Twitter)">
+          <img src="images/icons/Snapchat-2.png" alt="Snapchat icon" />
+        </a> -->
+
+        <a href="https://onlyfans.com/elara.muse/trial/whcpm2kvhzxh8ic6vize8u6odtbusbou" target="_blank" aria-label="OnlyFans">
+          <img src="images/icons/OnlyFans-2.png" alt="OnlyFans icon" style="width: 30px; height: 30px;" />
+
+        </a>
+      </div>
+      <div class="profile-actions">
+        <button class="btn primary" data-action="message">Message</button>
+        <button class="btn secondary" data-action="follow">Follow</button>
+      </div>
+    </section>
+
+    <!-- ================= CONTENT GRID ================= -->
+    <section class="content-grid fade-in" id="platform-links">
+      <!-- Fanvue (Large) -->
+      <div class="link-tile large" style="background: url('images/elara-10.jpg') center 50%/cover no-repeat;" data-platform="OnlyFans">
+<!--         <img src="images/icons/Fanvue.png" alt="Fanvue icon" class="badge" /> -->
+        <div class="overlay">
+          <span class="title">my naughty pictures🙈</span><br />
+          <!-- <span class="subtitle">Exclusive content</span> -->
+        </div>
+      </div>
+      <!-- Telegram -->
+      <div class="link-tile" style="background: url('images/elara-1.jpg') center 90%/cover no-repeat;" data-platform="OnlyFans">
+        <!-- <img src="images/icons/telegram.png" alt="Telegram icon" class="badge" /> -->
+        <div class="overlay">
+          <span class="title">Let's talk❤️</span><br />
+          
+        </div>
+            </div>
+      <!-- Snapchat -->
+      <div class="link-tile" style="background: url('images/elara-3.jpeg') center/cover no-repeat;" data-platform="OnlyFans">
+        <!-- <img src="images/icons/Snapchat-2.png" alt="Snapchat icon" class="badge" /> -->
+        <div class="overlay">
+          <span class="title">More of me😊</span><br />
+          <!-- <span class="subtitle">Exclusive snaps</span> -->
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    /* ------------------------------
+      INTERSECTION OBSERVER FOR SCROLL ANIMATIONS
+    ------------------------------ */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+    /* ------------------------------
+      CLICK HANDLERS
+    ------------------------------ */
+    // Platform link tiles with external URLs
+    const platformLinks = {
+      // Telegram: 'https://t.me/+G26nXg_Gbo43MDhh',
+      OnlyFans: 'https://onlyfans.com/elara.muse/trial/whcpm2kvhzxh8ic6vize8u6odtbusbou',
+    };
+
+    document.querySelectorAll('.link-tile').forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const platform = tile.dataset.platform;
+        const url = platformLinks[platform];
+        if (url) {
+          window.open(url, '_blank');
+        } else {
+          console.log(`Opening ${platform}`);
+        }
+      });
+    });
+
+    // Photo items
+    document.querySelectorAll('.photo-item').forEach((photo) => {
+      photo.addEventListener('click', () => {
+        console.log('Viewing photo');
+      });
+    });
+
+    // Profile actions & signup
+    document.querySelectorAll('[data-action]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const action = e.currentTarget.dataset.action;
+        if (action !== 'unlock') {
+          console.log(`${action.charAt(0).toUpperCase() + action.slice(1)} button clicked`);
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
